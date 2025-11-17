@@ -1,0 +1,80 @@
+[
+    {
+        "name": "Test User",
+        "email": "test1763261488175@example.com",
+        "phone": "",
+        "location": "London",
+        "notifications": [
+            "email"
+        ],
+        "subscribed_at": "2025-11-16 03:51:28",
+        "ip": "::1"
+    },
+    {
+        "name": "HealthCheck",
+        "email": "health@test.com",
+        "phone": "",
+        "location": "Test",
+        "notifications": [
+            "email"
+        ],
+        "subscribed_at": "2025-11-16 11:25:12",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "name": "PermissionTest",
+        "email": "permission1763261538383@test.com",
+        "phone": "",
+        "location": "TestCity",
+        "notifications": [
+            "email"
+        ],
+        "subscribed_at": "2025-11-16 03:52:18",
+        "ip": "::1"
+    },
+    {
+        "name": "Test User",
+        "email": "test1763261551468@example.com",
+        "phone": "",
+        "location": "London",
+        "notifications": [
+            "email"
+        ],
+        "subscribed_at": "2025-11-16 03:52:31",
+        "ip": "::1"
+    },
+    {
+        "name": "Alfredo",
+        "email": "alfredozboajr.pvgma@gmail.com",
+        "phone": "",
+        "location": "Laiya",
+        "notifications": "email",
+        "subscribed_at": "2025-11-16 10:41:32",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "name": "Test User",
+        "email": "test1763266748316@example.com",
+        "phone": "",
+        "location": "London",
+        "notifications": [
+            "email"
+        ],
+        "subscribed_at": "2025-11-16 05:19:11",
+        "ip": "::1"
+    },
+    {
+        "name": "Test",
+        "email": "test1763285632924@example.com",
+        "phone": "",
+        "location": "London",
+        "notifications": [
+            "email"
+        ],
+        "subscribed_at": "2025-11-16 10:33:53",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    }
+]
