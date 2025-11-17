@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sampay API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        button { padding: 10px 15px; margin: 5px; background: #4361ee; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #3a56d4; }
+        .result { margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 4px; white-space: pre-wrap; font-family: monospace; }
+        .success { border-left: 4px solid #28a745; }
+        .error { border-left: 4px solid #dc3545; }
+        .loading { color: #6c757d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Sampay API Test</h1>
+        
+        <!-- Weather API Test -->
+        <div class="test-section">
+            <h3>🌤️ Weather API Test</h3>
+            <input type="text" id="weather-location" placeholder="Enter location (e.g., London)" value="London" style="padding: 8px; width: 200px;">
+            <button onclick="testWeatherAPI()">Test Weather API</button>
+            <button onclick="testWeatherWithCoords()">Test with Coordinates</button>
+            <div id="weather-result" class="result"></div>
+        </div>
+
+        <!-- Subscription API Test -->
+        <div class="test-section">
+            <h3>📝 Subscription API Test</h3>
+            <div>
+                <input type="text" id="test-name" placeholder="Name" value="Test User" style="padding: 8px; margin: 2px;">
+                <input type="email" id="test-email" placeholder="Email" value="test@example.com" style="padding: 8px; margin: 2px;">
+                <input type="text" id="test-location" placeholder="Location" value="London" style="padding: 8px; margin: 2px;">
+            </div>
+            <button onclick="testSubscriptionAPI()">Test Subscription API</button>
+            <button onclick="testInvalidSubscription()">Test Invalid Data</button>
+            <div id="subscription-result" class="result"></div>
+        </div>
+
+        <!-- Backend Health Check -->
+        <div class="test-section">
+            <h3>🔧 Backend Health Check</h3>
+            <button onclick="testBackendHealth()">Test Backend Health</button>
+            <button onclick="testFilePermissions()">Test File Permissions</button>
+            <div id="health-result" class="result"></div>
+        </div>
+
+        <!-- All Tests -->
+        <div class="test-section">
+            <h3>🚀 Run All Tests</h3>
+            <button onclick="runAllTests()" style="background: #28a745;">Run Complete Test Suite</button>
+            <div id="all-tests-result" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        // Utility function to display results
+        function displayResult(elementId, data, isError = false) {
+            const element = document.getElementById(elementId);
+            const result = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+            element.innerHTML = result;
+            element.className = `result ${isError ? 'error' : 'success'}`;
+        }
+
+        // Test Weather API
+        async function testWeatherAPI() {
+            const location = document.getElementById('weather-location').value || 'London';
+            const resultElement = document.getElementById('weather-result');
+            resultElement.innerHTML = '<span class="loading">Testing weather API...</span>';
+            resultElement.className = 'result';
+
+            try {
+                const response = await fetch('backend/weather.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ location })
+                });
+
+                const text = await response.text();
+                let data;
+                
+                try {
+                    data = JSON.parse(text);
+                } catch (e) {
+                    displayResult('weather-result', `❌ Invalid JSON response:\n${text}`, true);
+                    return;
+                }
+
+                if (response.ok && data.success) {
+                    displayResult('weather-result', `✅ Weather API Success!\nSource: ${data.source}\nData: ${JSON.stringify(data.data, null, 2)}`);
+                } else {
+                    displayResult('weather-result', `❌ Weather API Error: ${data.message || 'Unknown error'}`, true);
+                }
+            } catch (error) {
+                displayResult('weather-result', `❌ Network Error: ${error.message}`, true);
+            }
+        }
+
+        // Test Weather with Coordinates
+        async function testWeatherWithCoords() {
+            const resultElement = document.getElementById('weather-result');
+            resultElement.innerHTML = '<span class="loading">Testing weather with coordinates...</span>';
+            resultElement.className = 'result';
+
+            try {
+                const response = await fetch('backend/weather.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        location: { lat: 51.5074, lon: -0.1278 } // London coordinates
+                    })
+                });
+
+                const text = await response.text();
+                let data;
+                
+                try {
+                    data = JSON.parse(text);
+                } catch (e) {
+                    displayResult('weather-result', `❌ Invalid JSON response:\n${text}`, true);
+                    return;
+                }
+
+                if (response.ok && data.success) {
+                    displayResult('weather-result', `✅ Coordinates Weather Success!\nSource: ${data.source}\nData: ${JSON.stringify(data.data, null, 2)}`);
+                } else {
+                    displayResult('weather-result', `❌ Coordinates Weather Error: ${data.message || 'Unknown error'}`, true);
+                }
+            } catch (error) {
+                displayResult('weather-result', `❌ Network Error: ${error.message}`, true);
+            }
+        }
+
+        // Test Subscription API
+        async function testSubscriptionAPI() {
+            const name = document.getElementById('test-name').value || 'Test User';
+            const email = `test${Date.now()}@example.com`; // Unique email
+            const location = document.getElementById('test-location').value || 'London';
+            const resultElement = document.getElementById('subscription-result');
+            resultElement.innerHTML = '<span class="loading">Testing subscription API...</span>';
+            resultElement.className = 'result';
+
+            try {
+                const formData = new URLSearchParams();
+                formData.append('name', name);
+                formData.append('email', email);
+                formData.append('location', location);
+                formData.append('notifications[]', 'email');
+
+                const response = await fetch('backend/subscribe.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData
+                });
+
+                const text = await response.text();
+                let data;
+                
+                try {
+                    data = JSON.parse(text);
+                } catch (e) {
+                    displayResult('subscription-result', `❌ Invalid JSON response:\n${text}`, true);
+                    return;
+                }
+
+                if (response.ok && data.success) {
+                    displayResult('subscription-result', `✅ Subscription Success!\nMessage: ${data.message}\nEmail Sent: ${data.email_sent}`);
+                } else {
+                    displayResult('subscription-result', `❌ Subscription Error: ${data.message || 'Unknown error'}`, true);
+                }
+            } catch (error) {
+                displayResult('subscription-result', `❌ Network Error: ${error.message}`, true);
+            }
+        }
+
+        // Test Invalid Subscription
+        async function testInvalidSubscription() {
+            const resultElement = document.getElementById('subscription-result');
+            resultElement.innerHTML = '<span class="loading">Testing invalid subscription...</span>';
+            resultElement.className = 'result';
+
+            try {
+                const formData = new URLSearchParams();
+                formData.append('name', ''); // Invalid: empty name
+                formData.append('email', 'invalid-email'); // Invalid email
+                formData.append('location', ''); // Invalid: empty location
+
+                const response = await fetch('backend/subscribe.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData
+                });
+
+                const text = await response.text();
+                let data;
+                
+                try {
+                    data = JSON.parse(text);
+                } catch (e) {
+                    displayResult('subscription-result', `❌ Invalid JSON response:\n${text}`, true);
+                    return;
+                }
+
+                if (!response.ok && data.success === false) {
+                    displayResult('subscription-result', `✅ Error Handling Working!\nExpected error: ${data.message}`);
+                } else {
+                    displayResult('subscription-result', `❌ Expected error but got success: ${JSON.stringify(data, null, 2)}`, true);
+                }
+            } catch (error) {
+                displayResult('subscription-result', `❌ Network Error: ${error.message}`, true);
+            }
+        }
+
+        // Test Backend Health
+        async function testBackendHealth() {
+            const resultElement = document.getElementById('health-result');
+            resultElement.innerHTML = '<span class="loading">Checking backend health...</span>';
+            resultElement.className = 'result';
+
+            try {
+                // Test if backend files are accessible
+                const tests = [
+                    { name: 'Subscribe API', url: 'backend/subscribe.php', method: 'OPTIONS' },
+                    { name: 'Weather API', url: 'backend/weather.php', method: 'OPTIONS' }
+                ];
+
+                let results = [];
+
+                for (const test of tests) {
+                    try {
+                        const response = await fetch(test.url, { method: test.method });
+                        results.push({
+                            name: test.name,
+                            status: response.status,
+                            accessible: response.status !== 404
+                        });
+                    } catch (e) {
+                        results.push({
+                            name: test.name,
+                            status: 'Error',
+                            accessible: false,
+                            error: e.message
+                        });
+                    }
+                }
+
+                // Check data directory
+                try {
+                    const response = await fetch('backend/subscribe.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: 'name=HealthCheck&email=health@test.com&location=Test&notifications[]=email'
+                    });
+                    const text = await response.text();
+                    const data = JSON.parse(text);
+                    
+                    results.push({
+                        name: 'File System',
+                        status: data.success ? 'Working' : 'Error',
+                        accessible: data.success,
+                        details: data.message
+                    });
+                } catch (e) {
+                    results.push({
+                        name: 'File System',
+                        status: 'Error',
+                        accessible: false,
+                        error: e.message
+                    });
+                }
+
+                displayResult('health-result', `🔧 Backend Health Check:\n${JSON.stringify(results, null, 2)}`);
+
+            } catch (error) {
+                displayResult('health-result', `❌ Health Check Error: ${error.message}`, true);
+            }
+        }
+
+        // Test File Permissions
+        async function testFilePermissions() {
+            const resultElement = document.getElementById('health-result');
+            resultElement.innerHTML = '<span class="loading">Testing file permissions...</span>';
+            resultElement.className = 'result';
+
+            try {
+                // Create a test file to check permissions
+                const response = await fetch('backend/subscribe.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `name=PermissionTest&email=permission${Date.now()}@test.com&location=TestCity&notifications[]=email`
+                });
+
+                const text = await response.text();
+                const data = JSON.parse(text);
+
+                if (data.success) {
+                    displayResult('health-result', `✅ File permissions are working!\nMessage: ${data.message}`);
+                } else {
+                    displayResult('health-result', `❌ File permission issue: ${data.message}`, true);
+                }
+
+            } catch (error) {
+                displayResult('health-result', `❌ Permission Test Error: ${error.message}`, true);
+            }
+        }
+
+        // Run All Tests
+        async function runAllTests() {
+            const resultElement = document.getElementById('all-tests-result');
+            resultElement.innerHTML = '<span class="loading">Running complete test suite...</span>';
+            resultElement.className = 'result';
+
+            const tests = [
+                { name: 'Weather API (City)', fn: testWeatherAPI },
+                { name: 'Weather API (Coordinates)', fn: testWeatherWithCoords },
+                { name: 'Subscription API', fn: testSubscriptionAPI },
+                { name: 'Error Handling', fn: testInvalidSubscription },
+                { name: 'Backend Health', fn: testBackendHealth }
+            ];
+
+            let results = [];
+            
+            for (const test of tests) {
+                try {
+                    // Create a temporary element to capture results
+                    const tempElement = document.createElement('div');
+                    document.body.appendChild(tempElement);
+                    
+                    // Mock displayResult for this test
+                    const originalDisplayResult = displayResult;
+                    window.displayResult = function(elementId, data, isError) {
+                        results.push({
+                            test: test.name,
+                            success: !isError,
+                            result: typeof data === 'string' ? data : JSON.stringify(data)
+                        });
+                    };
+
+                    await test.fn();
+                    
+                    // Restore original function
+                    window.displayResult = originalDisplayResult;
+                    document.body.removeChild(tempElement);
+
+                    // Small delay between tests
+                    await new Promise(resolve => setTimeout(resolve, 500));
+
+                } catch (error) {
+                    results.push({
+                        test: test.name,
+                        success: false,
+                        result: `Test error: ${error.message}`
+                    });
+                }
+            }
+
+            const passed = results.filter(r => r.success).length;
+            const total = results.length;
+            
+            displayResult('all-tests-result', 
+                `🎯 Test Suite Complete!\n\n` +
+                `Passed: ${passed}/${total} tests\n\n` +
+                `Detailed Results:\n${JSON.stringify(results, null, 2)}`
+            );
+        }
+    </script>
+</body>
+</html>

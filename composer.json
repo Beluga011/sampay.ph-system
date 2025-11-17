@@ -1,0 +1,11 @@
+{
+    "name": "sampay/sampay-app",
+    "description": "Smart Clothes Drying Assistant",
+    "type": "project",
+    "require": {
+        "phpmailer/phpmailer": "^6.8"
+    },
+    "config": {
+        "vendor-dir": "backend/vendor"
+    }
+}

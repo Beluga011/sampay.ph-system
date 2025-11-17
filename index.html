@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sampay - Smart Clothes Drying Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-cloud-sun"></i>
+                    </div>
+                    <span>Sampay</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#team">Our Team</a></li>
+                    <li><a href="#subscribe" class="nav-cta">Get Started</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span>Smart Weather Intelligence</span>
+                </div>
+                <h1 class="hero-title">Dry Smarter, Not Harder</h1>
+                <p class="hero-subtitle">Sampay uses real-time weather data to tell you exactly when it's the perfect time to dry your clothes outside. Save time, energy, and never get caught in the rain again.</p>
+                <div class="hero-buttons">
+                    <button id="check-weather-btn" class="btn btn-primary">
+                        <i class="fas fa-cloud-sun-rain"></i>
+                        Check Weather Now
+                    </button>
+                    <button id="subscribe-btn" class="btn btn-secondary">
+                        <i class="fas fa-bell"></i>
+                        Get Daily Alerts
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">15K+</span>
+                        <span class="stat-label">Happy Users</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">98%</span>
+                        <span class="stat-label">Accuracy</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Monitoring</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="visual-container">
+                    <div class="weather-card">
+                        <div class="card-header">
+                            <h3>Drying Conditions</h3>
+                            <div class="location-indicator">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span id="location-display">Detecting location...</span>
+                            </div>
+                        </div>
+                        <div class="weather-icon-container">
+                            <div class="weather-icon">
+                                <i class="fas fa-sun" id="weather-main-icon"></i>
+                            </div>
+                            <div class="weather-temp" id="temp-value">--</div>
+                        </div>
+                        <div class="weather-details">
+                            <div class="detail">
+                                <div class="detail-icon">
+                                    <i class="fas fa-tint"></i>
+                                </div>
+                                <div class="detail-info">
+                                    <span class="detail-label">Humidity</span>
+                                    <span class="detail-value" id="humidity-value">--</span>
+                                </div>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-icon">
+                                    <i class="fas fa-cloud-rain"></i>
+                                </div>
+                                <div class="detail-info">
+                                    <span class="detail-label">Precipitation</span>
+                                    <span class="detail-value" id="precip-value">--</span>
+                                </div>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-icon">
+                                    <i class="fas fa-wind"></i>
+                                </div>
+                                <div class="detail-info">
+                                    <span class="detail-label">Wind</span>
+                                    <span class="detail-value" id="wind-value">--</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recommendation-section">
+                            <h4>Drying Recommendation</h4>
+                            <div class="recommendation-badge" id="recommendation-badge">
+                                <div class="badge-icon">
+                                    <i class="fas fa-question-circle"></i>
+                                </div>
+                                <span class="badge-text">Check Weather</span>
+                            </div>
+                            <p class="recommendation-detail" id="recommendation-detail">Check current weather conditions to get your personalized drying recommendation</p>
+                        </div>
+                    </div>
+                    <div class="location-selector">
+                        <div class="location-option active" id="auto-location">
+                            <div class="option-icon">
+                                <i class="fas fa-location-arrow"></i>
+                            </div>
+                            <div class="option-content">
+                                <span class="option-title">Use My Location</span>
+                                <span class="option-desc">Automatic detection</span>
+                            </div>
+                        </div>
+                        <div class="location-option" id="manual-location">
+                            <div class="option-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="option-content">
+                                <span class="option-title">Enter Manually</span>
+                                <span class="option-desc">City or zip code</span>
+                            </div>
+                        </div>
+                        <div class="manual-input hidden" id="manual-input-container">
+                            <div class="input-group">
+                                <input type="text" id="location-input" placeholder="Enter city or zip code">
+                                <button id="location-submit" class="btn-input">
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">How Sampay Helps You</h2>
+                <p class="section-subtitle">Our intelligent system analyzes multiple weather factors to give you the most accurate drying recommendations</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <div class="icon-background">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                    </div>
+                    <h3>Smart Alerts</h3>
+                    <p>Receive notifications via SMS, email, or push notifications when conditions are perfect for drying clothes.</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Daily forecast updates</li>
+                        <li><i class="fas fa-check"></i> Rain alert warnings</li>
+                        <li><i class="fas fa-check"></i> Optimal time suggestions</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <div class="icon-background">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <h3>Advanced Analytics</h3>
+                    <p>Our algorithm analyzes temperature, humidity, wind, and precipitation to calculate the perfect drying conditions.</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Multi-factor analysis</li>
+                        <li><i class="fas fa-check"></i> Historical pattern recognition</li>
+                        <li><i class="fas fa-check"></i> Customized for your location</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <div class="icon-background">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                    </div>
+                    <h3>Multi-Platform</h3>
+                    <p>Access Sampay on any device. Get notifications wherever you are through your preferred channel.</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Responsive web app</li>
+                        <li><i class="fas fa-check"></i> SMS notifications</li>
+                        <li><i class="fas fa-check"></i> Email summaries</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Drying Algorithm</h2>
+                <p class="section-subtitle">We evaluate multiple weather factors to determine the perfect drying conditions</p>
+            </div>
+            <div class="algorithm-steps">
+                <div class="step">
+                    <div class="step-visual">
+                        <div class="step-number">1</div>
+                        <div class="step-connector"></div>
+                    </div>
+                    <div class="step-content">
+                        <h3>Temperature Analysis</h3>
+                        <p>We check if temperatures are between 18-32°C (65-90°F) for optimal drying. Higher temperatures accelerate evaporation while maintaining fabric integrity.</p>
+                        <div class="step-metric">
+                            <span class="metric-value">> 18°C</span>
+                            <span class="metric-label">Ideal Minimum</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-visual">
+                        <div class="step-number">2</div>
+                        <div class="step-connector"></div>
+                    </div>
+                    <div class="step-content">
+                        <h3>Humidity Assessment</h3>
+                        <p>Low humidity levels (below 70%) are crucial for efficient drying. We monitor humidity patterns throughout the day.</p>
+                        <div class="step-metric">
+                            <span class="metric-value">< 70%</span>
+                            <span class="metric-label">Optimal Humidity</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-visual">
+                        <div class="step-number">3</div>
+                        <div class="step-connector"></div>
+                    </div>
+                    <div class="step-content">
+                        <h3>Precipitation Check</h3>
+                        <p>We ensure there's no rain in the forecast for at least 6 hours to keep your clothes dry and prevent rewetting.</p>
+                        <div class="step-metric">
+                            <span class="metric-value">0%</span>
+                            <span class="metric-label">Rain Chance</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-visual">
+                        <div class="step-number">4</div>
+                    </div>
+                    <div class="step-content">
+                        <h3>Wind Factor</h3>
+                        <p>Moderate breeze (5-20 km/h) helps accelerate drying by moving moist air away from your clothes.</p>
+                        <div class="step-metric">
+                            <span class="metric-value">5-20 km/h</span>
+                            <span class="metric-label">Ideal Wind</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Members Section -->
+    <section id="team" class="team">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Development Team</h2>
+                <p class="section-subtitle">Meet the talented individuals who brought Sampay to life</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="team-name">ALfredo Jr. Boa</h3>
+                    <p class="team-role">Frontend & Backend Developer</p>
+                    <p class="team-desc">Responsible for implementing the core application functionality, API integrations, and user interface.</p>
+                    <div class="team-skills">
+                        <span class="skill-tag">HTML/CSS</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">PHP</span>
+                        <span class="skill-tag">MySQL</span>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="team-name">Lawrence</h3>
+                    <p class="team-role">Web Designer</p>
+                    <p class="team-desc">Created the visual design, user experience, and overall aesthetic of the Sampay application.</p>
+                    <div class="team-skills">
+                        <span class="skill-tag">UI/UX Design</span>
+                        <span class="skill-tag">Figma</span>
+                        <span class="skill-tag">Wireframing</span>
+                        <span class="skill-tag">Prototyping</span>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3 class="team-name">Manalo</h3>
+                    <p class="team-role">Pseudocode Specialist</p>
+                    <p class="team-desc">Developed the logical structure and algorithm design that forms the foundation of Sampay's functionality.</p>
+                    <div class="team-skills">
+                        <span class="skill-tag">Algorithm Design</span>
+                        <span class="skill-tag">Logic Planning</span>
+                        <span class="skill-tag">Problem Solving</span>
+                        <span class="skill-tag">Documentation</span>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <h3 class="team-name">Angara</h3>
+                    <p class="team-role">Flowchart Designer</p>
+                    <p class="team-desc">Visualized the application workflow and user journey through detailed flowcharts and process diagrams.</p>
+                    <div class="team-skills">
+                        <span class="skill-tag">Flowchart Design</span>
+                        <span class="skill-tag">Process Mapping</span>
+                        <span class="skill-tag">User Journey</span>
+                        <span class="skill-tag">System Architecture</span>
+                    </div>
+                </div>
+            </div>
+            <div class="team-collaboration">
+                <h3>Our Collaborative Process</h3>
+                <p>Working together, we followed an agile development approach where each team member's expertise contributed to creating a seamless, user-friendly application that helps people dry their clothes at the perfect time.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subscription Section -->
+    <section id="subscribe" class="subscription">
+        <div class="container">
+            <div class="subscription-container">
+                <div class="subscription-content">
+                    <h2>Ready to Dry Smarter?</h2>
+                    <p>Join thousands of users who are saving time and energy with Sampay's intelligent drying recommendations.</p>
+                    <ul class="benefits-list">
+                        <li><i class="fas fa-check"></i> Accurate daily drying forecasts</li>
+                        <li><i class="fas fa-check"></i> Rain alert notifications</li>
+                        <li><i class="fas fa-check"></i> Multi-channel alerts (SMS, Email, Push)</li>
+                        <li><i class="fas fa-check"></i> Personalized for your location</li>
+                    </ul>
+                </div>
+                <div class="subscription-form-container">
+                    <form id="subscription-form" class="subscription-form">
+                        <h3>Get Started Today</h3>
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number (for SMS)</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Optional">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Notification Preferences</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="notifications" value="email" checked>
+                                    <span class="checkmark"></span>
+                                    Email Notifications
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="notifications" value="sms">
+                                    <span class="checkmark"></span>
+                                    SMS Notifications
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="notifications" value="push">
+                                    <span class="checkmark"></span>
+                                    Push Notifications
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="location">Your Location</label>
+                            <input type="text" id="sub-location" name="location" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-full">
+                            <i class="fas fa-paper-plane"></i>
+                            Start Getting Alerts
+                        </button>
+                        <p class="form-note">No credit card required. Cancel anytime.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-cloud-sun"></i>
+                        </div>
+                        <span>Sampay</span>
+                    </div>
+                    <p class="footer-desc">Smart weather intelligence for perfect clothes drying every time.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#subscribe">Pricing</a></li>
+                        <li><a href="#">API</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Status</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Sampay. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Push Notification Permission Modal -->
+    <div id="push-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-bell"></i>
+            </div>
+            <h3>Enable Push Notifications?</h3>
+            <p>Get instant alerts when it's a perfect day for drying clothes. We'll notify you about optimal drying conditions and rain warnings.</p>
+            <div class="modal-buttons">
+                <button id="allow-push" class="btn btn-primary">Allow Notifications</button>
+                <button id="deny-push" class="btn btn-secondary">Not Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    <div id="success-message" class="message-toast hidden">
+        <div class="toast-content">
+            <i class="fas fa-check-circle"></i>
+            <span id="toast-text">Success! You've been subscribed to Sampay alerts.</span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
